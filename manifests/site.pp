@@ -1,8 +1,6 @@
 node basenode {
 
-  include exported::hosts
-  include exported::sshkeys
-  include exported::nagios
+  include puppetsnippet
 }
 
 node /pro-client[1-9]/ inherits 'basenode' {
@@ -20,5 +18,9 @@ node 'pro-master' inherits 'basenode' {
 node 'pro-nagios-server' inherits 'basenode' {
 
   include nagios
+
+}
+
+node /web[1-9]/ inherits 'basenode' {
 
 }
