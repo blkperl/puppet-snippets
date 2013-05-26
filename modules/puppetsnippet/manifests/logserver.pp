@@ -1,7 +1,5 @@
 class puppetsnippet::logserver {
 
-  include postgresql::server
-
   class { 'rsyslog::server':
       enable_tcp                => true,
       enable_udp                => true,
@@ -13,17 +11,17 @@ class puppetsnippet::logserver {
 
   class { 'rsyslog::database':
     backend  => 'pgsql',
-    server   => 'logmaster.lan',
+    server   => 'dbserver02.lan',
     database => 'Syslog',
     username => 'rsyslog',
     password => 'secret-logger',
   }
 
-  postgresql::db { 'Syslog':
+  # Export database to one of the database server
+  @@postgresql::db { 'Syslog':
     user     => 'rsyslog',
-    password => 'secret-logger'
+    password => 'secret-logger',
+    tag      => "env_$::environment",
   }
-
-  Postgresql::Db['Syslog'] -> Class['rsyslog::database']
 
 }
