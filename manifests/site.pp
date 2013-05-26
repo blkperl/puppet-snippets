@@ -38,51 +38,9 @@ node 'pro-nagios-server' inherits 'basenode' {
 }
 
 node 'tftpserver' inherits 'basenode' {
-  include pxe
-
-  $ubuntu = {
-    "arch" => ['amd64'],
-    "ver"  => ['precise'],
-    "os"   => "ubuntu"
-  }
-
-  resource_permute('pxe::images', $ubuntu)
-
-  pxe::menu {
-    'Main Menu':
-      file      => "default",
-      template  => "pxe/menu_default.erb";
-  }
-
-  pxe::menu::entry {
-    "Installations":
-      file    => "default",
-      append  => "pxelinux.cfg/menu_install",
-  }
-
+  include puppetsnippet::pxeserver
 }
 
 node 'dhcpserver' inherits 'basenode' {
-
-  class { 'dhcp':
-    dnsdomain    => [
-      'lan',
-      '1.0.10.in-addr.arpa',
-      ],
-    nameservers  => ['8.8.8.8'],
-    ntpservers   => ['us.pool.ntp.org'],
-    interfaces   => ['eth0'],
-    #dnsupdatekey => "/etc/bind/keys.d/$ddnskeyname",
-    #require      => Bind::Key[ $ddnskeyname ],
-    pxeserver    => '10.0.3.2',
-    pxefilename  => 'pxelinux.0',
-  }
-
-  dhcp::pool{ 'lan':
-    network => '10.0.3.1',
-    mask    => '255.255.255.0',
-    range   => '10.0.1.100 10.0.1.200',
-    gateway => '10.0.3.1',
-  }
-
+  include puppetsnippet::dhcpserver
 }
