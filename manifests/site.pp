@@ -8,7 +8,7 @@ node basenode {
 }
 
 node /dbserver[0-9]/ inherits 'basenode' {
-  include puppetsnippet::logserver
+  include puppetsnippet::dbserver
 }
 
 node 'logmaster' inherits 'basenode' {
