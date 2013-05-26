@@ -9,6 +9,6 @@ class puppetsnippet::dbserver {
   },
 }
 
-  Postgresql::Db <<| tag == "env_$environment" |>> {}
+  Postgresql::Db <<| tag == "pgserver_$hostname" |>> {}
 
 }

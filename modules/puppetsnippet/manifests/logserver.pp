@@ -21,7 +21,7 @@ class puppetsnippet::logserver {
   @@postgresql::db { 'Syslog':
     user     => 'rsyslog',
     password => 'secret-logger',
-    tag      => "env_$::environment",
+    tag      => "pgserver_dbserver2",
   }
 
 }
